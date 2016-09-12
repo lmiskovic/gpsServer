@@ -1,0 +1,6 @@
+package gpsServer;
+
+public class pair {
+	String name;
+	gpsCoordinates coordinates;
+}

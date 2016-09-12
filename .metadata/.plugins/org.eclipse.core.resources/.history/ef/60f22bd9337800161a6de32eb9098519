@@ -1,0 +1,36 @@
+package gpsTestCoordinatesSender;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+public class gpsTestCoordinatesSender {
+	
+	public static void main(String args[]) throws IOException, InterruptedException {
+			
+		final String host = "localhost";
+		final int portNumber = 20151;
+		System.out.println("Kreiran socket " + host + ":" + portNumber);
+		
+		@SuppressWarnings("resource")
+		Socket socket = new Socket(host, portNumber);
+		
+		gpsCoordinates coordinates = new gpsCoordinates();
+		coordinates.setLatitude(43.5138681);
+		coordinates.setLongitude(16.4608037);
+		
+		while (true) {
+			
+			double x=coordinates.getLatitude(); double y=coordinates.getLongitude();
+						
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject(coordinates);
+			
+			x+=0.0002; y+=0.0002;			
+			coordinates.setLatitude(x);
+			coordinates.setLongitude(y);
+			
+			Thread.sleep(3000);
+		}
+	}
+}

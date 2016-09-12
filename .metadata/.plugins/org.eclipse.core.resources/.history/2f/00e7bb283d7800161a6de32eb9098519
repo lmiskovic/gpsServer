@@ -1,0 +1,17 @@
+package gpsServer;
+
+import java.net.Socket;
+
+public class androidSockets {
+
+	Socket socket;
+	String name;
+	int id;
+	public androidSockets(Socket _socket, int _strCnt) {
+		socket = _socket;
+		id = _strCnt;
+		name = "Client " + id;
+	}
+	
+	
+}

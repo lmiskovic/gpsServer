@@ -1,0 +1,37 @@
+/*package gpsServer;
+
+import gpsTestCoordinatesSender.gpsCoordinates;
+
+public class Pair {
+	private String name;
+	private gpsCoordinates currentCoordinates;
+	
+	Pair(){
+		
+	}
+	
+	Pair(String _name){
+		name = _name;
+		//currentCoordinates.setLatitude(_currentCoordinates.getLatitude());
+		//currentCoordinates.setLongitude(_currentCoordinates.getLongitude());
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public void setName(String _name){
+		this.name = _name;
+	}
+	
+	public gpsCoordinates getCurrentCoordinates(){
+		return this.currentCoordinates;
+	}
+	
+	public void setCurrentCordinates(gpsCoordinates _currentCoordinates){
+		this.currentCoordinates.setLatitude(_currentCoordinates.getLatitude());
+		this.currentCoordinates.setLongitude(_currentCoordinates.getLongitude());
+
+	}
+	
+}*/

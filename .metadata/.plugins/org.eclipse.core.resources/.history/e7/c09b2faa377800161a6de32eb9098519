@@ -1,0 +1,43 @@
+package gpsTestCoordinatesSender;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.Random;
+
+public class gpsTestCoordinatesSender {
+	
+	public static void main(String args[]) throws IOException, InterruptedException {
+			
+		final String host = "localhost";
+		final int portNumber = 20151;
+		System.out.println("Kreiran socket " + host + ":" + portNumber);
+		
+		@SuppressWarnings("resource")
+		Socket socket = new Socket(host, portNumber);
+		
+		gpsCoordinates coordinates = new gpsCoordinates();
+		
+		Random r = new Random();
+		
+		double randomLat = 43.508801 + (43.526933 - 43.508801) * r.nextDouble();
+		double randomLng = 16.428506 + (16.503317 - 16.428506) * r.nextDouble();
+
+		coordinates.setLatitude(randomLat);
+		coordinates.setLongitude(randomLng);
+		
+		while (true) {
+			
+			double x=coordinates.getLatitude(); double y=coordinates.getLongitude();
+						
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject(coordinates);
+			
+			x+=0.0002; y+=0.0002;			
+			coordinates.setLatitude(x);
+			coordinates.setLongitude(y);
+			
+			Thread.sleep(3000);
+		}
+	}
+}

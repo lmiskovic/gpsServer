@@ -1,0 +1,60 @@
+package gpsServer;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.Socket;
+import java.util.ArrayList;
+
+@SuppressWarnings("serial")
+public class androidSockets implements Runnable, Serializable{
+
+	Socket socket;
+	String name;
+	int id;
+	ObjectInputStream in;
+	ObjectOutputStream out;
+	ArrayList<Pair> pairs = new ArrayList<Pair>();
+
+	public androidSockets(Socket _socket, int socketsCnt, ArrayList<Pair> _pairs) {
+		socket = _socket;
+		id = socketsCnt;
+		name = "Android client " + id;
+		pairs = _pairs;
+	}
+	
+	public void run() {
+			sendCoordinates();
+	}
+	
+	public void sendCoordinates() {
+
+		
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+
+			while(true){
+			//androidSockets.add(socket1); // testirati
+			
+			out.writeObject(pairs.size());
+
+			
+			for(int i = 0; i< pairs.size(); i++){
+				out.writeObject(pairs.get(i).getName());
+				out.writeObject(pairs.get(i).getLatitude());
+				out.writeObject(pairs.get(i).getLongitude());
+			}
+			Thread.sleep(3000);
+			//System.out.println(pairs.size());
+			}
+		} catch (IOException e) {
+			System.out.println(name + " se odspojio!");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
+	}
+	
+}

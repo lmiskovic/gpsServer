@@ -1,0 +1,58 @@
+package gpsServer;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import gpsTestCoordinatesSender.gpsCoordinates;
+
+public class gpsSockets implements Runnable {
+
+	Socket socket;
+	String name;
+	int id;
+	ObjectInputStream in;
+	ObjectOutputStream out;
+	gpsCoordinates coordinates;
+
+	List<Pair> pairs = Collections.synchronizedList(new ArrayList<Pair>());
+
+	
+	public gpsSockets(Socket _socket, List<Pair> _pairs) {
+		socket = _socket;
+		this.pairs = _pairs;
+		id = pairs.size();
+	}
+
+	@Override
+	public void run() {
+		pairs.add(new Pair("Client " + id, coordinates));
+		while (true) {
+			updateCurrentCoordinates();
+		}
+	}
+
+	public void updateCurrentCoordinates() {
+
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+			coordinates = (gpsCoordinates) in.readObject();
+			
+			System.out.println("Dobivene koordinate klijenta " + name + " su: " + coordinates.getLatitude() + " i "
+					+ coordinates.getLongitude());
+		} catch (IOException | ClassNotFoundException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		
+		
+		synchronized(pairs) {
+			pairs.get(id).setCurrentCordinates(coordinates);
+		}
+		
+	}
+}

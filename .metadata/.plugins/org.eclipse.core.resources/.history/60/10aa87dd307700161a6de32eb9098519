@@ -1,0 +1,12 @@
+package gpsServer;
+
+import gpsTestCoordinatesSender.gpsCoordinates;
+
+public class pair {
+	String name;
+	gpsCoordinates coordinates;
+	
+	pair(){
+		
+	}
+}

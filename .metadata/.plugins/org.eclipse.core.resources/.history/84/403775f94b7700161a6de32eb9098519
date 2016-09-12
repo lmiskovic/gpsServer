@@ -1,0 +1,29 @@
+package gpsServer;
+
+import gpsTestCoordinatesSender.gpsCoordinates;
+
+public class Pair {
+	private String name;
+	private gpsCoordinates currentCoordinates;
+	
+	Pair(String _name, gpsCoordinates _currentCoordinates){
+		name = _name; currentCoordinates = _coordinates;
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public void setName(String _name){
+		this.name = _name;
+	}
+	
+	public gpsCoordinates getCurrentCoordinates(){
+		return this.currentCoordinates;
+	}
+	
+	public void setCurrentCordinates(gpsCoordinates _currentCoordinates){
+		this.currentCoordinates = _currentCoordinates;
+	}
+	
+}

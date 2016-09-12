@@ -1,0 +1,13 @@
+package gpsServer;
+
+import gpsTestCoordinatesSender.gpsCoordinates;
+
+public class Pair {
+	private String name;
+	private gpsCoordinates currentCoordinates;
+	
+	Pair(){
+		
+	}
+	
+}

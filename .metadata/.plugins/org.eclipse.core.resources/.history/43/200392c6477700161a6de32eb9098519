@@ -1,0 +1,35 @@
+package gpsTestCoordinatesSender;
+
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class gpsCoordinates implements Serializable{
+	
+	public double latitude;
+	public double longitude;
+	
+	gpsCoordinates(){
+		
+	}
+	
+	gpsCoordinates(Double _latitude, Double _longitude){
+		this.latitude = _latitude;
+		this.longitude = _longitude;
+	}
+	
+	public double getLatitude(){
+		return latitude;
+	}
+	
+	public void setLatitude(Double _latitude){
+		latitude = _latitude;
+	}
+	
+	public double getLongitude(){
+		return longitude;
+	}
+	
+	public void setLongitude(Double _longitude){
+		longitude = _longitude;
+	}
+}

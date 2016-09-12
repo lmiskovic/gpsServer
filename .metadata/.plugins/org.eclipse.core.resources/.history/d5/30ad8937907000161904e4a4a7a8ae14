@@ -1,0 +1,95 @@
+package gpsServer;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class serverPool {
+
+	static int clientCnt = 0;
+
+	private static final int PORT = 20151;
+	private static final int PORT1 = 20152;
+
+	static ServerSocket serverSocket = null;
+	static ServerSocket serverSocket1 = null;
+
+	public static void main(String args[]) throws InterruptedException {
+
+		ArrayList<String> clients = new ArrayList<String>();
+		ArrayList<gpsSockets> sockets = new ArrayList<gpsSockets>();
+
+		ThreadFactory threadFactory = Executors.defaultThreadFactory();
+		ThreadPoolExecutor executorPool = new ThreadPoolExecutor(20, 40, 100, TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(5), threadFactory);
+
+		new Thread() {
+			@SuppressWarnings("resource")
+			public void run() {
+
+				try {
+					serverSocket = new ServerSocket(PORT);
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				System.out.println("Kreiran server socket na portu: " + PORT);
+
+				Socket socket = null;
+
+				while (true) {
+					try {
+						socket = serverSocket.accept();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("Veza prihvacena.");
+					gpsSockets a = new gpsSockets(socket, clientCnt);
+					executorPool.execute(a);
+					clients.add(a.name);
+					sockets.add(a);
+					clientCnt++;
+
+				}
+			}
+		}.start();
+
+		try {
+			serverSocket1 = new ServerSocket(PORT1);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		System.out.println("Kreiran android server socket na portu: " + PORT1);
+
+		Socket socket1 = null;
+
+		while (true) {
+
+			try {
+				socket1 = serverSocket1.accept();
+				System.out.println("Android klijent se spojio!");
+				ObjectOutputStream out = new ObjectOutputStream(socket1.getOutputStream());
+				out.writeObject(sockets);
+				out.writeObject(clientCnt);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+}
